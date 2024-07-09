@@ -54,9 +54,9 @@ public class TransactionController {
     }
 
     @GetMapping("/getByType")
-    public ResponseEntity<?> getTransactionByType(@RequestParam String username, @RequestParam Long type){
+    public ResponseEntity<?> getTransactionByType(@RequestParam String username, @RequestParam Long type, @RequestParam int month, @RequestParam int year){
         try{
-            return ResponseEntity.ok(transactionService.getTransactionByType(username, type));
+            return ResponseEntity.ok(transactionService.getTransactionByType(username, type, month, year));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

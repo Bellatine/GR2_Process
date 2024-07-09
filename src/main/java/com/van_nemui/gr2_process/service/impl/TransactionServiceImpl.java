@@ -11,14 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -91,14 +85,23 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionByType(String username, Long type) {
+    public List<Transaction> getTransactionByType(String username, Long type, int month, int year) {
         try{
             User user = validateUser(username);
             if (user == null) {
                 return null;
             }
-            return transactionRepository.findTransactionByType(type).map(Collections::singletonList)
-                    .orElseGet(Collections::emptyList);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            logger.info("start: " + calendar.getTime());
+            LocalDateTime startTime = parseCalendar(calendar);
+            calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            logger.info("end: " + calendar.getTime());
+            LocalDateTime endTime = parseCalendar(calendar);
+            return transactionRepository.findTransactionByType(user.getId(),type, startTime, endTime);
         }catch (Exception e) {
             logger.error("Error get transaction by type" + username, e);
             return null;
@@ -160,5 +163,10 @@ public class TransactionServiceImpl implements TransactionService {
             return null;
         }
         return user;
+    }
+
+    private LocalDateTime parseCalendar(Calendar calendar){
+        Instant instant = calendar.toInstant();
+        return LocalDateTime.ofInstant(instant,ZoneId.systemDefault());
     }
 }

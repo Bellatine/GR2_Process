@@ -10,7 +10,7 @@ public interface TransactionService {
     List<Transaction> getAllTransaction(String username);
     List<Transaction> getTransactionByCategory(String username, int category_id);
     List<Transaction> getTransactionByDate(String username, Date trans_time);
-    List<Transaction> getTransactionByType(String username, Long type);
+    List<Transaction> getTransactionByType(String username, Long type, int month, int year);
     List<Transaction> getTransactionById(String username, Long id);
     Transaction addTransaction(Transaction transaction);
     int removeTransactionById(String username, Long transactionId);

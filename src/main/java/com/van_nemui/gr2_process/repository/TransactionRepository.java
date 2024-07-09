@@ -12,8 +12,11 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findAll();
     Optional<Transaction> findById(Long id);
-    Optional<Transaction>findTransactionByType(Long type);
     void deleteById(Long id);
+
+    @Query("SELECT t FROM Transaction t WHERE t.user_id = :user_id and t.type = :type AND (t.trans_time BETWEEN :startOfDay AND :endOfDay)")
+    List<Transaction>findTransactionByType(@Param("user_id") Long user_id, @Param("type") Long type, @Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
+
 
     @Query("SELECT d FROM Transaction d WHERE d.user_id = :user_id")
     List<Transaction> findByUserId(@Param("user_id") Long user_id);

@@ -12,9 +12,6 @@ public class Category {
     private Long id;
 
     @Column(nullable = false)
-    private int user_id;
-
-    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

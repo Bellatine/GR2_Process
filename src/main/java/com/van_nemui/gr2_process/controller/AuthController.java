@@ -53,7 +53,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
-            userServiceImpl.registerUser(user);
+            User user1 = userServiceImpl.registerUser(user);
+            if(user1 == null){
+                logger.error("User is exist: " + user.getUsername());
+                return ResponseEntity.badRequest().body("User is exist");
+            }
             logger.info("Start reload data...");
             try {
 

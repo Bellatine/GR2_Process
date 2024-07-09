@@ -13,6 +13,6 @@ public class Cache {
     }
 
     public static class Categories{
-        public static Map<Integer, Category> ALL_CATEGORIES;
+        public static Map<Long, Category> ALL_CATEGORIES;
     }
 }

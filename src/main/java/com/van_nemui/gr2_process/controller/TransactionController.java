@@ -4,6 +4,7 @@ import com.van_nemui.gr2_process.model.Transaction;
 import com.van_nemui.gr2_process.service.TransactionService;
 import com.van_nemui.gr2_process.service.impl.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class TransactionController {
     }
 
     @GetMapping("/getBydate")
-    public ResponseEntity<?> getTransactionByDate(@RequestParam String username, @RequestParam Date date){
+    public ResponseEntity<?> getTransactionByDate(@RequestParam String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date){
         try{
             return ResponseEntity.ok(transactionService.getTransactionByDate(username,date));
         }catch (Exception e){
